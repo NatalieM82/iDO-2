@@ -62,8 +62,6 @@ public class NewTask extends FragmentActivity implements DialogListener {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public void createTask(View view) {
         // Getting the text
         EditText editText = (EditText) findViewById(R.id.new_task);
@@ -140,9 +138,7 @@ public class NewTask extends FragmentActivity implements DialogListener {
     }
 
     private void createAlarmAtDate(TaskDetails task) {
-
-        Toast.makeText(NewTask.this, "creating alarm", Toast.LENGTH_LONG).show();
-            Toast.makeText(NewTask.this, "In "+dateDay+":"+dateMonth+":"+dateYear, Toast.LENGTH_LONG).show();
+        try {
             Intent intent = new Intent();
             intent.setAction("com.pelnat.ido2.ido2.ReminderBroadCastReceiver");
             intent.putExtra("taskMessage", task._taskMessage);
@@ -150,9 +146,9 @@ public class NewTask extends FragmentActivity implements DialogListener {
 
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getID(), intent, 0);
 
-//        /* getting all parameters of create Date ob from task */
+        /* getting all parameters of create Date ob from task */
             Date date = new Date();
-           //fix date before and set a default day
+            // fix date before and set a default day
             date.setYear(date.getYear() + 1900);
             date.setMonth(date.getMonth() + 1);
             date.setDate(date.getDay());
@@ -171,53 +167,36 @@ public class NewTask extends FragmentActivity implements DialogListener {
             if (task._timeHour == -1 && task._timeMinute == -1 && task._dateDay == -1 && task._dateMonth == -1 && task._dateYear == -1) {
                 return;
             }
-
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millisecondsUntilDate(), pendingIntent);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public long millisecondsUntilDate() {
-//        try {
-//            Calendar cal = Calendar.getInstance();
-//            //Time Only
-//            if (timeHour != -1 && timeMinute != -1 && dateDay == -1 && dateMonth == -1 && dateYear == -1) {
-//                cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), timeHour, timeMinute);
-//            }
-//            // Time and Date
-//            if (dateDay != -1 && dateMonth != -1 && dateYear != -1 && timeHour != -1 && timeMinute != -1) {
-//                cal.set(dateYear, dateMonth, dateDay, timeHour, timeMinute);
-//            }
-//            //Date only
-//            if (dateDay != -1 && dateMonth != -1 && dateYear != -1 && timeHour == -1 && timeMinute == -1) {
-//                cal.set(dateYear, dateMonth, dateDay, 10, 0);
-//            }
-//            Calendar now = Calendar.getInstance();
-//            long diff_in_ms = cal.getTimeInMillis() - now.getTimeInMillis();
-//            return diff_in_ms;
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return 0;
-//        }
+        try {
+            Calendar cal = Calendar.getInstance();
+            if (timeHour != -1 && timeMinute != -1 && dateDay == -1 && dateMonth == -1 && dateYear == -1) {
+                cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), timeHour, timeMinute);
+            }
 
-        Toast.makeText(NewTask.this, "I'm Here", Toast.LENGTH_LONG).show();
+            if (dateDay != -1 && dateMonth != -1 && dateYear != -1 && timeHour != -1 && timeMinute != -1) {
+                cal.set(dateYear, dateMonth, dateDay, timeHour, timeMinute);
+            }
 
-        Calendar thatDay = Calendar.getInstance();
-        thatDay.set(Calendar.DAY_OF_MONTH,dateDay);
-        thatDay.set(Calendar.MONTH,dateMonth); // 0-11 so 1 less
-        thatDay.set(Calendar.YEAR, dateYear);
-        thatDay.set(Calendar.MINUTE, timeMinute);
-        thatDay.set(Calendar.HOUR_OF_DAY, timeHour);
+            if (dateDay != -1 && dateMonth != -1 && dateYear != -1 && timeHour == -1 && timeMinute == -1) {
+                cal.set(dateYear, dateMonth, dateDay, 10, 0);
+            }
+            Calendar now = Calendar.getInstance();
+            long diff_in_ms = cal.getTimeInMillis() - now.getTimeInMillis();
+            return diff_in_ms;
 
-        Calendar today = Calendar.getInstance();
-
-        Toast.makeText(NewTask.this, "Today is: "+today.toString(), Toast.LENGTH_LONG).show();
-
-        long diff = thatDay.getTimeInMillis() - today.getTimeInMillis();
-
-        Toast.makeText(NewTask.this, "Diff in Millis:" + diff, Toast.LENGTH_LONG).show();
-
-        return diff;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
 
     public void cancel(View view)
