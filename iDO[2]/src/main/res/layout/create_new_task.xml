@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/new_task"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:hint="Enter Your Task"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Create!"
+        android:layout_alignParentRight="true"
+        android:onClick="createTask"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Cancel!"
+        android:layout_alignParentRight="true"
+        android:onClick="cancel"
+        android:layout_gravity="center_horizontal" />
+
+    <CheckBox android:id="@+id/checkbox_notify"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make a Notification"
+        android:onClick="onCheckboxClicked"/>
+
+    <Button
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Time"
+        android:onClick="showTimePickerDialog"
+        android:enabled="false"/>
+    <Button
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set Date"
+        android:onClick="showDatePickerDialog"
+        android:enabled="false"/>
+
+</LinearLayout>

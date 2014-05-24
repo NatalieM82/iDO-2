@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pelnat.ido2.ido2" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.pelnat.ido2.ido2.MainActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.pelnat.ido2.ido2.NewTask"
+            android:label="Create New Task"
+            android:parentActivityName="com.pelnat.ido2.ido2.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="il.ac.shenkar.listview.NewTask" />
+        </activity>
+
+        <receiver android:name=".ReminderBroadCastReceiver">
+            <intent-filter>
+                <action android:name="il.ac.shenkar.listview" />
+            </intent-filter>
+        </receiver>
+    </application>
+
+</manifest>
