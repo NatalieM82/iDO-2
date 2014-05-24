@@ -25,12 +25,12 @@
             android:parentActivityName="com.pelnat.ido2.ido2.MainActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="il.ac.shenkar.listview.NewTask" />
+                android:value="com.pelnat.ido2.ido2.NewTask" />
         </activity>
 
         <receiver android:name=".ReminderBroadCastReceiver">
             <intent-filter>
-                <action android:name="il.ac.shenkar.listview" />
+                <action android:name="com.pelnat.ido2.ido2.ReminderBroadCastReceiver" />
             </intent-filter>
         </receiver>
     </application>

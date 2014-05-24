@@ -38,6 +38,7 @@ public class DatePickerFragment extends DialogFragment
             year = c.get(Calendar.YEAR);
             month = c.get(Calendar.MONTH);
             day = c.get(Calendar.DAY_OF_MONTH);
+
         }
 
         // Create a new instance of DatePickerDialog and return it

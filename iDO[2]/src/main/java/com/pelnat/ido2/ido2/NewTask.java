@@ -65,24 +65,16 @@ public class NewTask extends FragmentActivity implements DialogListener {
 
 
     public void createTask(View view) {
+        // Getting the text
         EditText editText = (EditText) findViewById(R.id.new_task);
         if (editText.getText().toString().isEmpty()) return;
         String taskMessage = editText.getText().toString();
 
+        //Creating ID
         int nowUseAsId = (int) (long) System.currentTimeMillis();
         if (nowUseAsId < 0) nowUseAsId *= -1;
-//        if(dateDay==-1)
-//        {
-//            Calendar c = Calendar.getInstance();
-//            SimpleDateFormat day = new SimpleDateFormat("d");
-//            dateDay =Integer.parseInt(day.format(c.getTime()));
-//
-//            SimpleDateFormat month = new SimpleDateFormat("MM");
-//            dateMonth =Integer.parseInt(month.format(c.getTime()));
-//
-//            SimpleDateFormat year = new SimpleDateFormat("yyyy");
-//            dateYear =Integer.parseInt(year.format(c.getTime()));
-//        }
+
+        //Checking if Alarm needed
         TaskDetails newTask=new TaskDetails(nowUseAsId, taskMessage, dateYear, dateMonth, dateDay, timeHour, timeMinute,hasAlarm, isDone);
         Toast.makeText(NewTask.this, "Out "+timeHour+":"+timeMinute, Toast.LENGTH_LONG).show();
         if ((timeHour != -1 && timeMinute != -1) || (dateDay != -1 && dateMonth != -1 && dateYear != -1)) {
@@ -96,31 +88,20 @@ public class NewTask extends FragmentActivity implements DialogListener {
             createAlarmAtDate(newTask);
         }
 
+
+//
+//        Intent intent = new Intent("com.pelnat.ido2.ido2.ReminderBroadCastReceiver");
+//        intent.putExtra("taskMessage", newTask._taskMessage);
+//        intent.putExtra("taskId", newTask._id);
+//
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, newTask.getID(), intent, 0);
+//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
+
         db.addTask(newTask);
-
-        Intent intent = new Intent("com.pelnat.ido2.ido2.ReminderBroadCastReceiver");
-        intent.putExtra("taskMessage", newTask._taskMessage);
-        intent.putExtra("taskId", newTask._id);
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, newTask.getID(), intent, 0);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
-
         editText.setText("");
         initialize_variables();
         updateListView();
-
-//        Intent intent = new Intent("il.ac.shenkar.listview");
-//
-//        intent.putExtra("text", newTask.getTaskMessage());
-//        intent.putExtra("id", counter);
-//
-//        PendingIntent pendingIntent =   PendingIntent.getBroadcast(this, counter++, intent, 0);
-//
-//        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-//
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
-
         finish();
 
     }
@@ -161,7 +142,6 @@ public class NewTask extends FragmentActivity implements DialogListener {
     private void createAlarmAtDate(TaskDetails task) {
 
         Toast.makeText(NewTask.this, "creating alarm", Toast.LENGTH_LONG).show();
-        try {
             Toast.makeText(NewTask.this, "In "+dateDay+":"+dateMonth+":"+dateYear, Toast.LENGTH_LONG).show();
             Intent intent = new Intent();
             intent.setAction("com.pelnat.ido2.ido2.ReminderBroadCastReceiver");
@@ -171,50 +151,43 @@ public class NewTask extends FragmentActivity implements DialogListener {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this, task.getID(), intent, 0);
 
 //        /* getting all parameters of create Date ob from task */
-//            Date date = new Date();
-//
-//           //fix date before and set a default day
-//            date.setYear(date.getYear() + 1900);
-//            date.setMonth(date.getMonth() + 1);
-//            date.setDate(date.getDay());
-//            date.setHours(10);
-//            date.setMinutes(0);
-//            //System.out.println("----------------"+task._dateYear+" "+task._dateMonth+" "+task._dateDay+" "+task._timeHour+" "+task._timeMinute);
-//            if (task._dateDay != -1 && task._dateMonth != -1 && task._dateYear != -1) {
-//                date.setYear(task._dateYear);
-//                date.setMonth(task._dateMonth);
-//                date.setDate(task._dateDay);
-//            }
-//            if (task._timeHour != -1 && task._timeMinute != -1) {
-//                date.setHours(task._timeHour);
-//                date.setMinutes(task._timeMinute);
-//            }
-//            if (task._timeHour == -1 && task._timeMinute == -1 && task._dateDay == -1 && task._dateMonth == -1 && task._dateYear == -1) {
-//                return;
-//            }
+            Date date = new Date();
+           //fix date before and set a default day
+            date.setYear(date.getYear() + 1900);
+            date.setMonth(date.getMonth() + 1);
+            date.setDate(date.getDay());
+            date.setHours(10);
+            date.setMinutes(0);
+            //System.out.println("----------------"+task._dateYear+" "+task._dateMonth+" "+task._dateDay+" "+task._timeHour+" "+task._timeMinute);
+            if (task._dateDay != -1 && task._dateMonth != -1 && task._dateYear != -1) {
+                date.setYear(task._dateYear);
+                date.setMonth(task._dateMonth);
+                date.setDate(task._dateDay);
+            }
+            if (task._timeHour != -1 && task._timeMinute != -1) {
+                date.setHours(task._timeHour);
+                date.setMinutes(task._timeMinute);
+            }
+            if (task._timeHour == -1 && task._timeMinute == -1 && task._dateDay == -1 && task._dateMonth == -1 && task._dateYear == -1) {
+                return;
+            }
 
-//            long curTime = System.currentTimeMillis();
-//            long diff = futureTime - curTime;
-         //   Toast.makeText(NewTask.this, (int) (System.currentTimeMillis() + date.getTime()), Toast.LENGTH_LONG).show();
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + millisecondsUntilDate(), pendingIntent);
     }
 
-//    public long millisecondsUntilDate() {
+    public long millisecondsUntilDate() {
 //        try {
 //            Calendar cal = Calendar.getInstance();
+//            //Time Only
 //            if (timeHour != -1 && timeMinute != -1 && dateDay == -1 && dateMonth == -1 && dateYear == -1) {
 //                cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), timeHour, timeMinute);
 //            }
-//
+//            // Time and Date
 //            if (dateDay != -1 && dateMonth != -1 && dateYear != -1 && timeHour != -1 && timeMinute != -1) {
 //                cal.set(dateYear, dateMonth, dateDay, timeHour, timeMinute);
 //            }
-//
+//            //Date only
 //            if (dateDay != -1 && dateMonth != -1 && dateYear != -1 && timeHour == -1 && timeMinute == -1) {
 //                cal.set(dateYear, dateMonth, dateDay, 10, 0);
 //            }
@@ -226,7 +199,26 @@ public class NewTask extends FragmentActivity implements DialogListener {
 //            e.printStackTrace();
 //            return 0;
 //        }
-//    }
+
+        Toast.makeText(NewTask.this, "I'm Here", Toast.LENGTH_LONG).show();
+
+        Calendar thatDay = Calendar.getInstance();
+        thatDay.set(Calendar.DAY_OF_MONTH,dateDay);
+        thatDay.set(Calendar.MONTH,dateMonth); // 0-11 so 1 less
+        thatDay.set(Calendar.YEAR, dateYear);
+        thatDay.set(Calendar.MINUTE, timeMinute);
+        thatDay.set(Calendar.HOUR_OF_DAY, timeHour);
+
+        Calendar today = Calendar.getInstance();
+
+        Toast.makeText(NewTask.this, "Today is: "+today.toString(), Toast.LENGTH_LONG).show();
+
+        long diff = thatDay.getTimeInMillis() - today.getTimeInMillis();
+
+        Toast.makeText(NewTask.this, "Diff in Millis:" + diff, Toast.LENGTH_LONG).show();
+
+        return diff;
+    }
 
     public void cancel(View view)
     {
