@@ -86,33 +86,12 @@ public class NewTask extends FragmentActivity implements DialogListener {
             createAlarmAtDate(newTask);
         }
 
-
-//
-//        Intent intent = new Intent("com.pelnat.ido2.ido2.ReminderBroadCastReceiver");
-//        intent.putExtra("taskMessage", newTask._taskMessage);
-//        intent.putExtra("taskId", newTask._id);
-//
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, newTask.getID(), intent, 0);
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-//        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 5000, pendingIntent);
-
         db.addTask(newTask);
         editText.setText("");
         initialize_variables();
-        updateListView();
+
         finish();
 
-    }
-
-    public void updateListView() {
-        try {
-            ListView lv = (ListView) findViewById(R.id.listV_main);
-            TaskListBaseAdapter currentList = new TaskListBaseAdapter(this, (java.util.List<TaskDetails>) iLBa);
-            lv.setAdapter(currentList);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void initialize_variables() {

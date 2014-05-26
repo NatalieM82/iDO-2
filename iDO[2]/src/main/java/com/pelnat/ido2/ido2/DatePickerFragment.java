@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -38,7 +39,6 @@ public class DatePickerFragment extends DialogFragment
             year = c.get(Calendar.YEAR);
             month = c.get(Calendar.MONTH);
             day = c.get(Calendar.DAY_OF_MONTH);
-
         }
 
         // Create a new instance of DatePickerDialog and return it
@@ -50,7 +50,7 @@ public class DatePickerFragment extends DialogFragment
         return d;
     }
 
-    public void onDateSet(DatePicker view, int year, int month, int day) {
+    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         // Because problem with month in DatePicker we fix it with +1 but not in edit mode!!
         month++;
 
