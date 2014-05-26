@@ -13,19 +13,22 @@ import android.content.Intent;
 public class ReminderBroadCastReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         //do something QUICK
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+        // Get taskId & message
+        int taskId = intent.getIntExtra("taskId", 0);
+        String notificationText = intent.getStringExtra("taskMessage");
 
         Intent myIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, intent.getIntExtra("taskMessage", 0), myIntent, 0);
+        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, myIntent, 0);
 
-        NotificationManager notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        Notification notification = new Notification(R.drawable.ic_launcher, "iDO[2]", System.currentTimeMillis());
-        notification.setLatestEventInfo(context,"iDO[2] Reminder", intent.getStringExtra("taskMessage"), pendingIntent);
-
-        notificationManager.notify(intent.getIntExtra("taskMessage",0), notification);
-
-
+        Notification notification = new Notification(R.drawable.ic_launcher, "iDO[2] Reminder!", System.currentTimeMillis());
+        notification.setLatestEventInfo(context, "iDO[2]", notificationText, pendingIntent);
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        notificationManager.notify(null, taskId, notification); //0 is id
 
     }
 }

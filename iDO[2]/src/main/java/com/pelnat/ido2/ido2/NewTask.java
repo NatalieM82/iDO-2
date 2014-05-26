@@ -34,6 +34,8 @@ public class NewTask extends FragmentActivity implements DialogListener {
     private int dateDay = -1;
     public static DatabaseHandler db;
     private static TaskListBaseAdapter iLBa;
+    private boolean datechosen = false;
+    private boolean timechosen = false;
     @SuppressLint("NewApi")
 
     @Override
@@ -184,6 +186,7 @@ public class NewTask extends FragmentActivity implements DialogListener {
     }
 
     public void showTimePickerDialog(View v) {
+        timechosen = true;
         try {
             DialogFragment newFragment = new TimePickerFragment();
 
@@ -202,6 +205,7 @@ public class NewTask extends FragmentActivity implements DialogListener {
     }
 
     public void showDatePickerDialog(View v) {
+        datechosen = true;
         try {
             DialogFragment newFragment = new DatePickerFragment();
 
@@ -241,7 +245,7 @@ public class NewTask extends FragmentActivity implements DialogListener {
 
     @Override
     public void onFinishEditDialog(Intent data) {
-
+        final Calendar c = Calendar.getInstance();
         try {
         /* For TimePicker Fragment */
             if (data.getExtras().containsKey("hour"))
@@ -256,6 +260,17 @@ public class NewTask extends FragmentActivity implements DialogListener {
                 dateMonth = data.getExtras().getInt("month");
             if (data.getExtras().containsKey("day"))
                 dateDay = data.getExtras().getInt("day");
+
+            if (datechosen == false) {
+                dateYear = c.get(Calendar.YEAR);
+                dateMonth = c.get(Calendar.MONTH);
+                dateDay = c.get(Calendar.DAY_OF_MONTH);
+            }
+
+            if (timechosen == false) {
+                timeHour = c.get(Calendar.HOUR_OF_DAY);
+                timeMinute = c.get(Calendar.MINUTE);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
